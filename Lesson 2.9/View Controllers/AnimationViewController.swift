@@ -49,6 +49,7 @@ extension AnimationViewController {
         let curve = nextAnimation.animationCurve
         let force = String(format: "%.2f", springImageView.force)
         let duration = String(format: "%.2f", springImageView.duration)
+        let labels = [animationNameLabel, curveNameLabel, durationLabel,forceLabel]
         
         animationNameLabel.text = "Animation name: \(name)"
         curveNameLabel.text = "Curve: \(curve)"
@@ -56,18 +57,14 @@ extension AnimationViewController {
         forceLabel.text = "Force: \(force)"
         animationButton.setTitle("Run " + name, for: .normal)
         
-        animateButton(animation: .pop, delay: 0, duration: 0.8, sender: animationNameLabel)
-        animateButton(animation: .pop, delay: 0.2, duration: 0.8, sender: curveNameLabel)
-        animateButton(animation: .pop, delay: 0.4, duration: 0.8, sender: durationLabel)
-        animateButton(animation: .pop, delay: 0.6, duration: 0.8, sender: forceLabel)
+        for (label, index) in zip(labels, 0..<labels.count) {
+            if let label = label {
+                animateButton(animation: .pop, delay: CGFloat(index) * 0.2, duration: 0.8, sender: label)
+            }
+        }
     }
     
-    private func animateButton(
-        animation: AnimationPreset,
-        delay: CGFloat,
-        duration: CGFloat,
-        sender: SpringLabel
-    ) {
+    private func animateButton(animation: AnimationPreset, delay: CGFloat, duration: CGFloat, sender: SpringLabel) {
         sender.animation = animation.rawValue
         sender.duration = duration
         sender.delay = delay
